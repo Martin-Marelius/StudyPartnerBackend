@@ -10,8 +10,8 @@ namespace BusinessLogic.IBL
     public interface IDeadlineBL
     {
         Task AddDeadline(Deadline deadline);
-        Task DeleteDeadline(int deadlineId);
-        Task<Deadline> GetDeadline(int deadlineId);
-        Task UpdateDeadline(Deadline deadline, int deadlineId);
+        Task DeleteDeadline(string deadlineId);
+        Task<Deadline> GetDeadline(string deadlineId);
+        Task UpdateDeadline(Deadline deadline, string deadlineId);
     }
 }

@@ -10,8 +10,8 @@ namespace BusinessLogic.IBL
     public interface ICourseBL
     {
         Task AddCourse(Course course);
-        Task DeleteCourse(int courseId);
-        Task<Course> GetCourse(int courseId);
-        Task UpdateCourse(Course course, int courseId);
+        Task DeleteCourse(string courseId);
+        Task<Course> GetCourse(string courseId);
+        Task UpdateCourse(Course course, string courseId);
     }
 }

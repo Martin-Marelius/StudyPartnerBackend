@@ -19,6 +19,7 @@ namespace Tests.BL
             // Set up dependency injection container
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddScoped<IUserBL, UserBL>();
+            serviceCollection.AddScoped<ISubjectBL, SubjectBL>();
             ServiceProvider = serviceCollection.BuildServiceProvider();
         }
 
@@ -70,6 +71,51 @@ namespace Tests.BL
             Assert.Equal(user.FirstName, dbUser.FirstName);
             Assert.Equal(user.LastName, dbUser.LastName);
             Assert.Equal(user.Email, dbUser.Email);
+        }
+    }
+
+    public class SubjectTests : IClassFixture<MyFixture>
+    {
+        public ISubjectBL _subjectBL;
+        public IUserBL _userBL;
+
+        public SubjectTests()
+        {
+            var serviceProvider = new ServiceCollection()
+            .AddScoped<ISubjectBL, SubjectBL>()
+            .AddScoped<IUserBL, UserBL>()
+            .BuildServiceProvider();
+
+            // Resolve the service
+            _userBL = serviceProvider.GetRequiredService<IUserBL>();
+            _subjectBL = serviceProvider.GetRequiredService<ISubjectBL>();
+        }
+
+        [Fact]
+        public async Task AddSubject_SubjectDoesntExist_IsAdded()
+        {
+            // Arrange
+            var subject = new Subject { ColorCode = "123", Description = "123", SchoolName = "123", Title = "123" };
+            var user = new User { FirstName = "John", LastName = "Doe", Email = "123" };
+
+            // variable for random uuid
+            var subjectId = Guid.NewGuid().ToString();
+            var userId = Guid.NewGuid().ToString();
+
+            // add user
+            await _userBL.AddUser(user, userId);
+
+            // add subject
+            await _subjectBL.AddSubject(userId, subjectId, subject);
+
+            // gets subject
+            var dbSubject = await _subjectBL.GetSubject(subjectId);
+
+            // is identical
+            Assert.Equal(subject.ColorCode, dbSubject.ColorCode);
+            Assert.Equal(subject.Description, dbSubject.Description);
+            Assert.Equal(subject.SchoolName, dbSubject.SchoolName);
+            Assert.Equal(subject.Title, dbSubject.Title);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Database.Entities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,7 +15,7 @@ namespace Database.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        public int CourseId { get; set; }
+        public string CourseId { get; set; }
         [Required]
         public string Title { get; set; }
         [Required]
@@ -30,6 +31,7 @@ namespace Database.Models
         [Required]
         public int SubjectId { get; set; }
         [ForeignKey("SubjectId")]
+
         public Subject Subject { get; set; }
     }
 }

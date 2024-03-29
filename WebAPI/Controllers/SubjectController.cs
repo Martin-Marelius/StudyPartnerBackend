@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace WebAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("{userId}/[controller]")]
     public class SubjectController : ControllerBase
     {
         private readonly ISubjectBL subjectBL;
@@ -18,7 +18,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("{subjectId}")]
-        public async Task<IActionResult> GetSubject(int subjectId)
+        public async Task<IActionResult> GetSubject(string subjectId)
         {
             try
             {
@@ -34,12 +34,12 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddSubject([FromBody] Subject subject)
+        [HttpPost("{subjectId}")]
+        public async Task<IActionResult> AddSubject(string userId, string subjectId, [FromBody] Subject subject)
         {
             try
             {
-                await subjectBL.AddSubject(subject);
+                await subjectBL.AddSubject(userId, subjectId, subject);
                 return Ok();
             }
             catch (Exception ex)
@@ -49,7 +49,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("{subjectId}")]
-        public async Task<IActionResult> UpdateSubject(int subjectId, [FromBody] Subject subject)
+        public async Task<IActionResult> UpdateSubject(string subjectId, [FromBody] Subject subject)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpDelete("{subjectId}")]
-        public async Task<IActionResult> DeleteSubject(int subjectId)
+        public async Task<IActionResult> DeleteSubject(string subjectId)
         {
             try
             {

@@ -47,11 +47,11 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("{userId}")]
-        public async Task<IActionResult> UpdateUser(string userId, [FromBody] User user)
+        public async Task<IActionResult> UpdateUser(string userId, [FromBody] User updatedUser)
         {
             try
             {
-                await userBL.UpdateUser(user, userId);
+                await userBL.UpdateUser(updatedUser, userId);
                 return Ok();
             }
             catch (Exception ex)

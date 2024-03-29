@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("{deadlineId}")]
-        public async Task<IActionResult> GetDeadline(int deadlineId)
+        public async Task<IActionResult> GetDeadline(string deadlineId)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("{deadlineId}")]
-        public async Task<IActionResult> UpdateDeadline(int deadlineId, [FromBody] Deadline deadline)
+        public async Task<IActionResult> UpdateDeadline(string deadlineId, [FromBody] Deadline deadline)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpDelete("{deadlineId}")]
-        public async Task<IActionResult> DeleteDeadline(int deadlineId)
+        public async Task<IActionResult> DeleteDeadline(string deadlineId)
         {
             try
             {

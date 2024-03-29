@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,7 +12,9 @@ namespace Database.Models
     public class Subject
     {
         [Key]
-        public int SubjectId { get; set; }
+        public int Id { get; set; }
+        [Required]
+        public string SubjectId { get; set; }
         [Required]
         public string Title { get; set; }
         public string? Description { get; set; }
@@ -20,14 +23,18 @@ namespace Database.Models
         [Required]
         public string ColorCode { get; set; }
         [Required]
-        public string CreatedBy { get; set; } // UserId
         public DateTime CreatedAt { get; set; }
         [Required]
-        public string UpdatedBy { get; set; } // UserId
+        public int UpdatedBy { get; set; } // UserId
+        [Required]
         public DateTime UpdatedAt { get; set; }
-        public List<User>? Users { get; set; }
-        public List<Course>? Courses { get; set; }
-        public List<Deadline>? Deadlines { get; set; }
-
+        [Required]
+        public int UserId { get; set; } // UserId
+        [ForeignKey("UserId")]
+        public User User { get; set; }
+        [JsonIgnore]
+        public ICollection<Course>? Courses { get; set; }
+        [JsonIgnore]
+        public ICollection<Deadline>? Deadlines { get; set; }
     }
 }

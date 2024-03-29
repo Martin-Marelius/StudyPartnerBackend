@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20240328221547_updated-identifiers")]
-    partial class updatedidentifiers
+    [Migration("20240329161359_UpdatedFields")]
+    partial class UpdatedFields
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,8 +33,9 @@ namespace Database.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
+                    b.Property<string>("CourseId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Days")
                         .IsRequired()
@@ -75,8 +76,9 @@ namespace Database.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DeadlineId")
-                        .HasColumnType("int");
+                    b.Property<string>("DeadlineId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -101,11 +103,11 @@ namespace Database.Migrations
 
             modelBuilder.Entity("Database.Models.Subject", b =>
                 {
-                    b.Property<int>("SubjectId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubjectId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ColorCode")
                         .IsRequired()
@@ -114,14 +116,14 @@ namespace Database.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SchoolName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubjectId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -132,11 +134,15 @@ namespace Database.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("UpdatedBy")
+                        .HasColumnType("int");
 
-                    b.HasKey("SubjectId");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Subjects");
                 });
@@ -173,21 +179,6 @@ namespace Database.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("SubjectUser", b =>
-                {
-                    b.Property<int>("SubjectsSubjectId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("SubjectsSubjectId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("UserSubjects", (string)null);
-                });
-
             modelBuilder.Entity("Database.Models.Course", b =>
                 {
                     b.HasOne("Database.Models.Subject", "Subject")
@@ -210,19 +201,15 @@ namespace Database.Migrations
                     b.Navigation("Subject");
                 });
 
-            modelBuilder.Entity("SubjectUser", b =>
+            modelBuilder.Entity("Database.Models.Subject", b =>
                 {
-                    b.HasOne("Database.Models.Subject", null)
-                        .WithMany()
-                        .HasForeignKey("SubjectsSubjectId")
+                    b.HasOne("Database.Models.User", "User")
+                        .WithMany("Subjects")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Database.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Database.Models.Subject", b =>
@@ -230,6 +217,11 @@ namespace Database.Migrations
                     b.Navigation("Courses");
 
                     b.Navigation("Deadlines");
+                });
+
+            modelBuilder.Entity("Database.Models.User", b =>
+                {
+                    b.Navigation("Subjects");
                 });
 #pragma warning restore 612, 618
         }

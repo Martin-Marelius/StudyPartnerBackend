@@ -21,6 +21,7 @@ namespace BusinessLogic.BL
             }
 
             user.UserId = userId;
+
             await dbContext.Users.AddAsync(user);
             await dbContext.SaveChangesAsync();
         }

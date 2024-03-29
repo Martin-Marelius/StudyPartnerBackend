@@ -11,14 +11,22 @@ namespace BusinessLogic.BL
 {
     public class SubjectBL : ISubjectBL
     {
-        public async Task AddSubject(Subject subject)
+        public async Task AddSubject(string userId, string subjectId, Subject subject)
         {
             var dbContext = new AppDBContext();
+            var user = await dbContext.Users.Where(u => u.UserId == userId).FirstOrDefaultAsync() ?? throw new Exception("User not found");
+
+            subject.UserId = user.Id;
+            subject.SubjectId = subjectId;
+            subject.CreatedAt = DateTime.Now;
+            subject.UpdatedAt = DateTime.Now;
+            subject.UpdatedBy = user.Id;
+
             await dbContext.Subjects.AddAsync(subject);
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteSubject(int subjectId)
+        public async Task DeleteSubject(string subjectId)
         {
             var dbContext = new AppDBContext();
             var subject = await dbContext.Subjects.Where(s => s.SubjectId == subjectId).FirstOrDefaultAsync();
@@ -33,7 +41,7 @@ namespace BusinessLogic.BL
             }
         }
 
-        public async Task<Subject> GetSubject(int subjectId)
+        public async Task<Subject> GetSubject(string subjectId)
         {
             var dbContext = new AppDBContext();
             var subject = await dbContext.Subjects.Where(s => s.SubjectId == subjectId).FirstOrDefaultAsync();
@@ -47,7 +55,7 @@ namespace BusinessLogic.BL
             }
         }
 
-        public async Task UpdateSubject(Subject subject, int subjectId)
+        public async Task UpdateSubject(Subject subject, string subjectId)
         {
             var dbContext = new AppDBContext();
 
@@ -66,11 +74,7 @@ namespace BusinessLogic.BL
             if (subject.ColorCode != dbSubject.ColorCode)
                 dbSubject.ColorCode = subject.ColorCode;
 
-            if (subject.CreatedBy != dbSubject.CreatedBy)
-                dbSubject.CreatedBy = subject.CreatedBy;
-
-            if (subject.UpdatedAt != dbSubject.UpdatedAt)
-                dbSubject.UpdatedAt = subject.UpdatedAt;
+            dbSubject.UpdatedAt = DateTime.Now;
 
             await dbContext.SaveChangesAsync();
         }

@@ -18,7 +18,7 @@ namespace BusinessLogic.BL
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteDeadline(int deadlineId)
+        public async Task DeleteDeadline(string deadlineId)
         {
             var dbContext = new AppDBContext();
             var deadline = await dbContext.Deadlines.Where(d => d.DeadlineId == deadlineId).FirstOrDefaultAsync();
@@ -33,7 +33,7 @@ namespace BusinessLogic.BL
             }
         }
 
-        public Task<Deadline> GetDeadline(int deadlineId)
+        public Task<Deadline> GetDeadline(string deadlineId)
         {
             var dbContext = new AppDBContext();
             var deadline = dbContext.Deadlines.Where(d => d.DeadlineId == deadlineId).FirstOrDefaultAsync();
@@ -47,7 +47,7 @@ namespace BusinessLogic.BL
             }
         }
 
-        public async Task UpdateDeadline(Deadline deadline, int deadlineId)
+        public async Task UpdateDeadline(Deadline deadline, string deadlineId)
         {
             var dbContext = new AppDBContext();
             

@@ -19,7 +19,7 @@ namespace BusinessLogic.BL
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteCourse(int courseId)
+        public async Task DeleteCourse(string courseId)
         {
             var dbContext = new AppDBContext();
 
@@ -36,7 +36,7 @@ namespace BusinessLogic.BL
             }
         }
 
-        public async Task<Course> GetCourse(int courseId)
+        public async Task<Course> GetCourse(string courseId)
         {
             var dbContext = new AppDBContext();
             var course = await dbContext.Courses.Where(c => c.CourseId == courseId).FirstOrDefaultAsync();
@@ -51,7 +51,7 @@ namespace BusinessLogic.BL
             }
         }
 
-        public async Task UpdateCourse(Course course, int courseId)
+        public async Task UpdateCourse(Course course, string courseId)
         {
             var dbContext = new AppDBContext();
             

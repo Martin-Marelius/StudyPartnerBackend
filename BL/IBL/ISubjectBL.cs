@@ -9,9 +9,9 @@ namespace BusinessLogic.IBL
 {
     public interface ISubjectBL
     {
-        Task AddSubject(Subject subject);
-        Task DeleteSubject(int subjectId);
-        Task<Subject> GetSubject(int subjectId);
-        Task UpdateSubject(Subject subject, int subjectId);
+        Task AddSubject(string userId, string subjectId, Subject subject);
+        Task DeleteSubject(string subjectId);
+        Task<Subject> GetSubject(string subjectId);
+        Task UpdateSubject(Subject subject, string subjectId);
     }
 }

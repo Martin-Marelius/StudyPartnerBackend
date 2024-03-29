@@ -17,7 +17,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("{courseId}")]
-        public async Task<IActionResult> GetCourse(int courseId)
+        public async Task<IActionResult> GetCourse(string courseId)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("{courseId}")]
-        public async Task<IActionResult> UpdateCourse(int courseId, [FromBody] Course course)
+        public async Task<IActionResult> UpdateCourse(string courseId, [FromBody] Course course)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpDelete("{courseId}")]
-        public async Task<IActionResult> DeleteCourse(int courseId)
+        public async Task<IActionResult> DeleteCourse(string courseId)
         {
             try
             {
